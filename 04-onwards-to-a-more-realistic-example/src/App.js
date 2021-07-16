@@ -6,58 +6,43 @@ import useHttp from './hooks/use-http';
 
 function App() {;
   const [tasks, setTasks] = useState([]);
-  const manageData =(data,taskText)=>{
-    const loadedTasks = [];
+  
+    const {isLoading,error,enterTaskHandler:fetchTasks} =useHttp()
 
-      for (const taskKey in data) {
-        loadedTasks.push({ id: taskKey, text: data[taskKey].text });
-      }
-
-      setTasks(loadedTasks);
-  }
-    const {isLoading,error,enterTaskHandler:fetchTasks} =useHttp({
+    const manageData =(data)=>{
+      const loadedTasks = [];
+  
+        for (const taskKey in data) {
+          loadedTasks.push({ id: taskKey, text: data[taskKey].text });
+        }
+  
+        setTasks(loadedTasks);
+    }
+  useEffect(() => {
+    fetchTasks({
       url:'https://http-starting-project-default-rtdb.firebaseio.com/custom_hooks2.json'
     },
-    manageData)
+    manageData);
+  }, [fetchTasks]);
 
-
-  // const fetchTasks = async (taskText) => {
-  //   setIsLoading(true);
-  //   setError(null);
-  //   try {
-  //     const response = await fetch(
-  //       'https://http-starting-project-default-rtdb.firebaseio.com/custom_hooks2.json'
-  //     );
-
-  //     if (!response.ok) {
-  //       throw new Error('Request failed!');
-  //     }
-
-  //     const data = await response.json();
-
-      
-  //   } catch (err) {
-  //     setError(err.message || 'Something went wrong!');
-  //   }
-  //   setIsLoading(false);
+  // const taskAddHandler = (task) => {
+  //   setTasks((prevTasks) => prevTasks.concat(task));
   // };
-
-  useEffect(() => {
-    fetchTasks();
-  }, []);
-
-  const taskAddHandler = (task) => {
-    setTasks((prevTasks) => prevTasks.concat(task));
-  };
 
   return (
     <React.Fragment>
-      <NewTask onAddTask={taskAddHandler} />
+      <NewTask />
+      <div style={{'textAlign':"center"}} >
+      <button  onClick={()=>fetchTasks({
+      url:'https://http-starting-project-default-rtdb.firebaseio.com/custom_hooks2.json'
+    },
+    manageData)}>Fetch</button>
+      </div>
+        
       <Tasks
         items={tasks}
         loading={isLoading}
         error={error}
-        onFetch={fetchTasks}
       />
     </React.Fragment>
   );

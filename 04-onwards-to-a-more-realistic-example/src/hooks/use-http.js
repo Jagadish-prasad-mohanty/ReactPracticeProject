@@ -1,17 +1,17 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 
-const useHttp = (httpConfig, dataUses) => {
+const useHttp = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const enterTaskHandler = async (taskText) => {
+  const enterTaskHandler =useCallback(async (httpConfig, dataUses) => {
     setIsLoading(true);
     setError(null);
     try {
       const response = await fetch(httpConfig.url, {
         method: httpConfig.method ? httpConfig.method : "GET",
-        body: taskText
-          ? JSON.stringify({ text: taskText })
+        body: httpConfig.body
+          ? JSON.stringify({ text: httpConfig.body })
           : null,
         headers: httpConfig.headers ? httpConfig.headers : {},
       });
@@ -20,13 +20,13 @@ const useHttp = (httpConfig, dataUses) => {
         throw new Error("Request failed!");
       }
       const data=response.json();
-      dataUses(data,taskText);
+      dataUses(data);
     } catch (err) {
       setError(err.message || "Something went wrong!");
     }
     setIsLoading(false);
 
-};
+}, [] )
 return {
   isLoading,
   error,
