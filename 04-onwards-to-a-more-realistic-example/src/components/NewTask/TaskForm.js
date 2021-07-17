@@ -18,7 +18,7 @@ const TaskForm = (props) => {
   return (
     <form className={classes.form} onSubmit={submitHandler}>
       <input type='text' ref={taskInputRef} />
-      <button onClick={props.onSendData}>{props.loading ? 'Sending...' : 'Add Task'}</button>
+      <button type="submit">{props.loading ? 'Sending...' : 'Add Task'}</button>
     </form>
   );
 };

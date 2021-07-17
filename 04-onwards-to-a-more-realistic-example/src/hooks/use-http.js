@@ -19,7 +19,7 @@ const useHttp = () => {
       if (!response.ok) {
         throw new Error("Request failed!");
       }
-      const data=response.json();
+      const data=await response.json();
       dataUses(data);
     } catch (err) {
       setError(err.message || "Something went wrong!");
