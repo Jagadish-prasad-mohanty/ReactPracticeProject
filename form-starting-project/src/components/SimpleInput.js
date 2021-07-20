@@ -1,52 +1,82 @@
-import { useRef, useState } from "react";
+import { useState } from "react";
+import Input from "./Input";
 
 const SimpleInput = (props) => {
   //input ref by value
-  const nameChangeRef=useRef();
+  // const nameChangeRef=useRef();
 
   //name by useState
   const [ name, setName ] = useState("");
-  const [ inputNameValid, setInputNameValid ] =useState(false);
-  const [ inputNameTouched, setInputNameTouched ] = useState(false)
+  const [ email,setEmail ] =  useState("");
+  const [ inputNameTouched, setInputNameTouched ] = useState(false);
+  const [ inputEmailTouched, setInputEmailTouched ] = useState(false);
 
   //value of name by ref
   // const nameR=nameChangeRef.current.value 
+  const inputNameValid=name.trim().length !== 0
+  const inputNameInValid = inputNameTouched && !inputNameValid
+  const inputEmailValid=email.trim().length !== 0 && email.includes('@')
+  const inputEmailInValid = inputEmailTouched && !inputEmailValid
 
-  //change handler for input change
+  let formIsValid=false;
+
+  if (inputNameValid && inputEmailValid){
+    formIsValid=true
+  }
+  //change handler for name change
   const nameChangeHandler = (event) => {
     setName(event.target.value);
   };
-
-  const inputNameInValid = inputNameTouched && !inputNameValid
-
+  // change handler for email
+  const emailChangeHandler = (event) =>{
+    setEmail(event.target.value);
+  }
+  //code when input lost focus
+  const onNameBlurHandler = ()=>{
+    setInputNameTouched(true)
+  }
+  const onEmailBlurHandler = ()=>{
+    setInputEmailTouched(true)
+  }
   //submit handler when form submit
   const onSubmitHandler = (e) => {
     e.preventDefault();
     setInputNameTouched(true);
-    if (name.trim().length === 0){
-      setInputNameValid(false)
+    setInputEmailTouched(true);
+    if (inputNameInValid && inputEmailInValid){
       return;
     }
-    setInputNameValid(true)
-    console.log(name);
+    setName('')
+    setEmail('')
+    setInputNameTouched(false)
+    setInputEmailTouched(false)
     // console.log(nameR);
   };
-  const formClass=inputNameInValid?"form-control invalid":"form-control"
   return (
     <form onSubmit={onSubmitHandler}>
-      <div className={formClass}>
-        <label htmlFor="name">Your Name</label>
-        <input
-          ref={nameChangeRef}
+      <div className="form-control">
+        <Input
+          // ref={nameChangeRef}
+          label="Your Name"
           type="text"
           id="name"
           value={name}
+          onBlur={onNameBlurHandler}
           onChange={nameChangeHandler}
+          notValid={inputNameInValid}
+        />
+        <Input
+          label="Your E-mail"
+          type="text"
+          id="email"
+          value={email}
+          onChange={emailChangeHandler}
+          onBlur={onEmailBlurHandler}
+          notValid={inputEmailInValid}
         />
       </div>
-      {inputNameInValid && <p className='error-text'>Name can't be blank</p>}
       <div className="form-actions">
-        <button>Submit</button>
+        <button disabled={!formIsValid}>Submit</button>
       </div>
     </form>
   );
