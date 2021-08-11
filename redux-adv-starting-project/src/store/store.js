@@ -35,6 +35,10 @@ const productsSlice= createSlice({
                 reqItem.total+=newItem.price
             }
         },
+        // replaceCart:(state,action)=>{
+        //     state.products=action.payload.products;
+        //     state.totalQuantity=action.payload.totalQuantity
+        // },
         removeItem: (state,action)=>{
             const reqId=action.payload;
             const reqItem=state.products.find(item=>item.id===reqId);

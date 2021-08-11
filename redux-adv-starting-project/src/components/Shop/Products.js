@@ -30,25 +30,26 @@ const Products = (props) => {
   const storeProducts=useSelector(store=>store.storeProducts.storeProducts);
   const isLoading=useSelector(store=>store.storeProducts.isLoading);
   console.log(storeProducts);
-  const fetchData =async ()=>{
-    const response= await fetch('https://redux-adv-project-default-rtdb.firebaseio.com/products.json');
-    const data=await response.json();
-    // console.log(data);
-    const resData=[];
-    for (const d in data){
-      console.log(d);
-      resData.push({
-        id:d,
-        title:data[d].title,
-        description:data[d].description,
-        price:data[d].price
-      })
-    }
-    // console.log(resData);
-    dispatch(storeProductActions.addStoreProduct(resData));
-    dispatch(storeProductActions.finishLoading());
-  }
+  
   useEffect(() => {
+    const fetchData =async ()=>{
+      const response= await fetch('https://redux-adv-project-default-rtdb.firebaseio.com/products.json');
+      const data=await response.json();
+      // console.log(data);
+      const resData=[];
+      for (const d in data){
+        console.log(d);
+        resData.push({
+          id:d,
+          title:data[d].title,
+          description:data[d].description,
+          price:data[d].price
+        })
+      }
+      // console.log(resData);
+      dispatch(storeProductActions.addStoreProduct(resData));
+      dispatch(storeProductActions.finishLoading());
+    }
     fetchData();
   }, [])
   let allProducts=<h3 style={{textAlign:"center",color:'ButtonFace'}}>Loading...</h3>
