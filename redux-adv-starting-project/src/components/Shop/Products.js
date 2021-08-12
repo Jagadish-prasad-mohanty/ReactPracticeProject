@@ -51,7 +51,7 @@ const Products = (props) => {
       dispatch(storeProductActions.finishLoading());
     }
     fetchData();
-  }, [])
+  }, [dispatch])
   let allProducts=<h3 style={{textAlign:"center",color:'ButtonFace'}}>Loading...</h3>
   if (isLoading){
     return allProducts

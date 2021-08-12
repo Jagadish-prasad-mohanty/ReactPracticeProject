@@ -1,6 +1,7 @@
 import {configureStore, createSlice} from '@reduxjs/toolkit'
 const initialCartState ={
-    toggle:false
+    toggle:false,
+    notification:null
 }
 
 
@@ -10,6 +11,9 @@ const cartSlice=createSlice({
     reducers:{
         toggler:(state)=>{
             state.toggle=!state.toggle
+        },
+        setNotification: (state,action) =>{
+            state.notification=action.payload
         }
     }
 })
