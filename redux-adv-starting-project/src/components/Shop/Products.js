@@ -4,27 +4,6 @@ import {useEffect} from 'react'
 import { useDispatch, useSelector } from "react-redux";
 import {storeProductActions} from '../../store/store'
 
-const DUMMY_DATA = [
-  {
-    id: "p1",
-    title: "Book",
-    price: 10,
-    description: "This is a first product - amazing!",
-  },
-  {
-    id: "p2",
-    title: "Pen",
-    price: 5,
-    description: "This is a second product - amazing!",
-  },
-  {
-    id: "p3",
-    title: "Note",
-    price: 8,
-    description: "This is a third product - amazing!",
-  },
-];
-
 const Products = (props) => {
   const dispatch=useDispatch();
   const storeProducts=useSelector(store=>store.storeProducts.storeProducts);
@@ -32,7 +11,7 @@ const Products = (props) => {
   console.log(storeProducts);
   
   useEffect(() => {
-    const fetchData =async ()=>{
+    const fetchProductData =async ()=>{
       const response= await fetch('https://redux-adv-project-default-rtdb.firebaseio.com/products.json');
       const data=await response.json();
       // console.log(data);
@@ -50,13 +29,13 @@ const Products = (props) => {
       dispatch(storeProductActions.addStoreProduct(resData));
       dispatch(storeProductActions.finishLoading());
     }
-    fetchData();
+    fetchProductData();
   }, [dispatch])
   let allProducts=<h3 style={{textAlign:"center",color:'ButtonFace'}}>Loading...</h3>
   if (isLoading){
     return allProducts
   }
-  allProducts = DUMMY_DATA.map((data) => (
+  allProducts = storeProducts.map((data) => (
     <ProductItem
       key={data.id}
       id={data.id}

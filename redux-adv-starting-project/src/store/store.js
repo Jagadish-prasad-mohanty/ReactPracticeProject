@@ -20,7 +20,8 @@ const cartSlice=createSlice({
 
 const initialPoductsState={
     products:[],
-    totalQuantity:0
+    totalQuantity:0,
+    cartChanged:false
 }
 
 const productsSlice= createSlice({
@@ -28,6 +29,7 @@ const productsSlice= createSlice({
     initialState:initialPoductsState,
     reducers:{
         addItem:(state,action)=>{
+            state.cartChanged=true;
             const newItem=action.payload
             const reqItem=state.products.find(item=>item.id===newItem.id);
             state.totalQuantity++;
@@ -39,11 +41,12 @@ const productsSlice= createSlice({
                 reqItem.total+=newItem.price
             }
         },
-        // replaceCart:(state,action)=>{
-        //     state.products=action.payload.products;
-        //     state.totalQuantity=action.payload.totalQuantity
-        // },
-        removeItem: (state,action)=>{
+        replaceCart:(state,action)=>{
+            state.products=action.payload.products;
+            state.totalQuantity=action.payload.totalQuantity
+        },
+        decrItem: (state,action)=>{
+            state.cartChanged=true
             const reqId=action.payload;
             const reqItem=state.products.find(item=>item.id===reqId);
             state.totalQuantity-=1
@@ -54,6 +57,13 @@ const productsSlice= createSlice({
                 reqItem.quantity-=1;
                 reqItem.total-=reqItem.price
             }
+        },
+        removeItem:(state,action)=>{
+            state.cartChanged=true
+            const reqId=action.payload;
+            const reqItem=state.products.find(item=>item.id===reqId);
+            state.totalQuantity-=reqItem.quantity
+            state.products=state.products.filter(item=>item.id!==reqId)
         }
     }
 })

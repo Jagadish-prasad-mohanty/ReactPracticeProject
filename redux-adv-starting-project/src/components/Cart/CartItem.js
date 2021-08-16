@@ -6,6 +6,9 @@ import { useDispatch } from 'react-redux';
 const CartItem = (props) => {
   const { id, title, quantity, total, price } = props.item;
   const dispatch=useDispatch();
+  const decrItemHandler= () =>{
+    dispatch(productsActions.decrItem(id))
+  }
   const removeItemHandler= () =>{
     dispatch(productsActions.removeItem(id))
   }
@@ -29,7 +32,7 @@ const CartItem = (props) => {
           x <span>{quantity}</span>
         </div>
         <div className={classes.actions}>
-          <button onClick={removeItemHandler}>-</button>
+          <button onClick={decrItemHandler}>-</button>
           <button onClick={addItemHandler}>+</button>
         </div>
       </div>

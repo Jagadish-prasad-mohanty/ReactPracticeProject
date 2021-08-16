@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux';
 
 const Cart = (props) => {
   const products=useSelector(state=>state.products.products)
-  // const dispatch=useDispatch();
+  
   const cartItems=products.map(product=><CartItem key={product.id} item={{ id:product.id ,title: product.title, quantity: product.quantity, total: product.total, price: product.price }}></CartItem>)
   return (
     <Card className={classes.cart}>
