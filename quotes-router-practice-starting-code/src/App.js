@@ -4,8 +4,9 @@ import { Route, Switch, Redirect } from "react-router-dom";
 import AllQuotes from "./pages/AllQuotes";
 import QuoteDetails from "./pages/QuoteDetails";
 import NewQuote from "./pages/NewQuote";
-import MainNavigation from "./components/layout/MainNavigation";
+// import MainNavigation from "./components/layout/MainNavigation";
 import Layout from "./components/layout/Layout";
+import NoQuote from "./pages/NoQuote";
 function App() {
   // const [quotes, setQuotes] = useState([]);
   // const quoteAddHandler = (quote) => {
@@ -27,9 +28,10 @@ function App() {
         <Route path="/quotelist" exact>
           <AllQuotes/>
         </Route>
-        <Route path="/quotelist/:quoteID" component={QuoteDetails}/>
-        {/* <Route path="/quotelist/no-quote" exact>
-        </Route> */}
+        <Route path="/quotelist/:quoteID"  component={QuoteDetails}/>
+        <Route path="*">
+          <NoQuote/>
+        </Route>
       </Switch>
     </Layout>
     

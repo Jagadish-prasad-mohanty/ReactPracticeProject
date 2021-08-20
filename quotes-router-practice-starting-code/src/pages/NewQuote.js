@@ -2,9 +2,12 @@ import React from 'react';
 import QuoteForm from '../components/quotes/QuoteForm'
 
 function NewQuote() {
+    const addQuoteHandler= (quote) =>{
+        console.log('[NewQuote.js]',quote);
+    }
     return (
         <div>
-            <QuoteForm/>
+            <QuoteForm onAddQuote={addQuoteHandler}/>
         </div>
     )
 }

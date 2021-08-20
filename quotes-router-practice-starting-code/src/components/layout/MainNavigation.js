@@ -8,8 +8,8 @@ function MainNavigation() {
             <div className={classes.logo}>Small Quotes</div>
             <nav className={classes.nav}>
                 <ul>
-                    <li><NavLink to='/quotelist'>AllQuotes</NavLink></li>
-                    <li><NavLink to='/newquote'>NewQuote</NavLink></li>
+                    <li><NavLink activeClassName={classes.active} to='/quotelist'>AllQuotes</NavLink></li>
+                    <li><NavLink activeClassName={classes.active} to='/newquote'>NewQuote</NavLink></li>
                 </ul>
             </nav>
         </div>
