@@ -1,5 +1,5 @@
-import React from 'react'
-import { Link, Route, useParams } from 'react-router-dom';
+import React  from 'react'
+import { Link, Route, useParams ,useRouteMatch } from 'react-router-dom';
 import Comments from '../components/comments/Comments'
 import HighlightedQuote from '../components/quotes/HighlightedQuote';
 import NoQuote from './NoQuote';
@@ -10,20 +10,26 @@ const DUMMY=[
   ]
 function QuoteDetails(props) {
     const param=useParams();
-    const path=`/quotelist/${param.quoteID}/comments`;
-    // console.log(path);
-    // console.log('propssss', props);
-    console.log(DUMMY.findIndex(quote=>quote.id===param.quoteID));
-    const reqQuote=DUMMY.find(quote=>quote.id===param.quoteID)
+    const match= useRouteMatch();
+    console.log(match);
+    const path=`${match.url}/comments`;
+    console.log(path);
+    // console.log(DUMMY.findIndex(quote=>quote.id===param.quoteID));
+    const reqQuote=DUMMY.find(quote=>quote.id===param.quoteID);
     if (!reqQuote){
         return <NoQuote/>
     }
     return (
         <>
             <HighlightedQuote details={{author:reqQuote.author,text:reqQuote.text}}/>
-            <Link className='btn' to={path}>Comment</Link>
+            <Route path={`${match.path}`} exact>
+                <div className='centered'>
+                    <Link className='btn--flat' to={path}>Load Comment</Link>
+                </div>
+            </Route>
+                
             <Route path={path}>
-            <Comments/>
+                <Comments/>
             </Route>
         </>
     )
