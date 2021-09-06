@@ -8,7 +8,7 @@ const QuoteForm = (props) => {
   const [isFocus,setIsFocus] =useState(false);
   const authorInputRef = useRef();
   const textInputRef = useRef();
-  const history=useHistory();
+ 
   function submitFormHandler(event) {
     event.preventDefault();
     const enteredAuthor = authorInputRef.current.value;
@@ -17,7 +17,7 @@ const QuoteForm = (props) => {
     // optional: Could validate here
 
     props.onAddQuote({ author: enteredAuthor, text: enteredText });
-    history.push('/quotelist');
+   
   }
 
   const onFormFocusHandler = () =>{

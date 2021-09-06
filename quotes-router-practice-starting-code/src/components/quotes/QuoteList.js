@@ -1,5 +1,6 @@
 import { Fragment } from 'react';
 import { useHistory, useLocation} from 'react-router-dom';
+import LoadingSpinner from '../UI/LoadingSpinner';
 
 import QuoteItem from './QuoteItem';
 import classes from './QuoteList.module.css';
@@ -7,6 +8,7 @@ import classes from './QuoteList.module.css';
 const QuoteList = (props) => {
   // const match=useRouteMatch();
   // console.log(match);
+  console.log(props.quotes);
   const location=useLocation();
   const history=useHistory();
   const queryParams=new URLSearchParams(location.search);
@@ -14,10 +16,10 @@ const QuoteList = (props) => {
   const sortQuotes= (quotes,isAsc) =>{
     return quotes.sort((qA,qB)=>{
       if (isAsc){
-        return qA.id>qB.id?1:-1
+        return qA.id>qB.id?1:-1;
       }
       else{
-        return qB.id>qA.id?1:-1
+        return qB.id>qA.id?1:-1;
       }
     })
   }
@@ -29,11 +31,15 @@ const QuoteList = (props) => {
       search:`sort=${isAsc?'desc':'asc'}`
     })
   }
+  if (props.isLoading){
+    return <LoadingSpinner/>
+  }
   return (
     <Fragment>
     <div className={classes.sorting}>
       <button onClick={onClickHandler}>Sort {isAsc?'Descending':'Ascending'}</button>
     </div>
+
       <ul className={classes.list}>
         {sortedQuotes.map((quote) => (
           <QuoteItem

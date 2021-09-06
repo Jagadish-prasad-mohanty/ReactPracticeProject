@@ -24,7 +24,7 @@
   margin-bottom: 0.5rem;
 }
 
-.control textarea {
+.control textarea,.control input {
   font: inherit;
   padding: 0.35rem;
   border-radius: 4px;

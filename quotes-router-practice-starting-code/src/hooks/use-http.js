@@ -60,21 +60,21 @@ import { useReducer, useCallback } from 'react';
 // export default useHttp;
 
 const reducerFunction =(state,action)=>{
-  if (state.action==='SEND'){
+  if (action.type==='SEND'){
     return {
       data:null,
       status:'pending',
       error:null
     }
   }
-  else if (state.action==='SUCCESS'){
+  else if (action.type==='SUCCESS'){
     return {
       data:action.responseData,
       status:'completed',
       error:null
     }
   }
-  else if (state.action==='ERROR'){
+  else if (action.type==='ERROR'){
     return {
       data:null,
       status:'completed',
@@ -92,6 +92,7 @@ const useHttp= (requestFunction ,startWithPending=false) =>{
     dispatch({type:'SEND'});
     try {
       const responseData= await requestFunction(reqData);
+      console.log(responseData);
       dispatch({type:'SUCCESS', responseData})
     } catch (error) {
       dispatch({type:'ERROR',errorMessage:error.message || 'Something went wrong'})

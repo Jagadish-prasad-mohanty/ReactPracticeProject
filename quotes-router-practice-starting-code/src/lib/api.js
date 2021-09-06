@@ -111,6 +111,7 @@ export const getAllQuotes = async () =>{
       };
       transformedQuotes.push(quote)
     }
+    console.log(transformedQuotes);
     return transformedQuotes
 }
 export const getSingleQuote = async (quoteID) =>{
@@ -142,6 +143,7 @@ export const addQuote = async (quoteData) =>{
 }
 export const addComment = async (commentObj) =>{
   const {quoteID,commentData}=commentObj
+  console.log(quoteID,commentData);
   const response= await fetch(`${FIREBASE_DOMAIN}/comments/${quoteID}.json`,{
     method:'POST',
     body:JSON.stringify(commentData),
@@ -166,10 +168,11 @@ export const getAllComments = async (quoteID) =>{
     for (let key in data){
       const comment={
         id:key,
-        ...data
+        ...data[key]
 
       }
       transformedComments.push(comment);
     }
-  return transformedQuotes
+    console.log("[api.js.. getAllComments()..]",transformedComments);
+  return transformedComments
 }
