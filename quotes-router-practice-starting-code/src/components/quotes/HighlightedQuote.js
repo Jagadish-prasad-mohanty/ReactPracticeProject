@@ -7,9 +7,6 @@ const HighlightedQuote = (props) => {
   const { text, author} = props.details;
   return (
     <figure className={classes.quote}>
-    <p style={{color:'white'}}>
-        {param.quoteID}
-      </p>
       <p>{text}</p>
       <figcaption>{author}</figcaption>
     </figure>

@@ -5,7 +5,7 @@ import classes from './MainNavigation.module.css';
 function MainNavigation() {
     return (
         <div className={ classes.header}>
-            <div className={classes.logo}>Small Quotes</div>
+            <div className={classes.logo}>RedEye</div>
             <nav className={classes.nav}>
                 <ul>
                     <li><NavLink activeClassName={classes.active} to='/quotelist'>AllQuotes</NavLink></li>
