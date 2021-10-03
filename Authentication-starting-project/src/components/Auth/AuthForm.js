@@ -1,21 +1,26 @@
-import { useState ,useRef} from 'react';
+import { useState ,useRef, useContext} from 'react';
 
 import classes from './AuthForm.module.css';
-
+import AuthContext from '../../store/ContextProvider';
+import { useHistory } from 'react-router';
 const AuthForm = () => {
   const [isLogin, setIsLogin] = useState(true);
+  const authCtx=useContext(AuthContext);
+
   const emailRef=useRef();
   const passRef=useRef();
-  const [isLoading,setIsLoading]=useState(false)
+  const [isLoading,setIsLoading]=useState(false);
   const switchAuthModeHandler = () => {
     setIsLogin((prevState) => !prevState);
   };
 
+  const history=useHistory();
   const submitFormHandler= (e) =>{
     e.preventDefault();
+    
     const enteredEmail=emailRef.current.value;
     const enteredPassword=passRef.current.value;
-    console.log("hi");
+    // console.log("hi");
     setIsLoading(true);
     let url;
     if (isLogin){
@@ -36,24 +41,41 @@ const AuthForm = () => {
     }).then(res=>{
       setIsLoading(false);
       if (res.ok){
+        console.log("res ok");
         return res.json();
       }else{
         return res.json().then(data=>{
           let errorMessage='Authentication Failed!!'
           if (data && data.error && data.error.message){
+            // console.log(data.error.message);
             errorMessage=data.error.message
           }
-          return new Error(errorMessage)
-        })
+          throw new Error(errorMessage)
+        });
       }
     }).then((data)=>{
-        console.log(data);
-        alert("Success");
+      console.log(data);
+      // localStorage.setItem('token',data.idToken);
+      if (!isLogin){
+        console.log(isLogin);
+        setIsLogin(true);
+        if (data && data.idToken)
+        history.replace('/auth')
+        return;
+      }
+      // console.log(data.expiresIn);
+      // authCtx.login(data.idToken,data.expiresIn);
+      const estimateTime=new Date(new Date().getTime()+(+data.expiresIn)*1000)
+      authCtx.login(data.idToken,estimateTime.toISOString());
+      
+      // alert("Success");
+      history.replace('/')
     }).catch((err)=>{
+      console.log("ere");
       alert(err.message)
-          console.log(err.message);
-    })
-  }
+          console.log("[err]",err.message);
+    });
+  };
 
   return (
     <section className={classes.auth}>
