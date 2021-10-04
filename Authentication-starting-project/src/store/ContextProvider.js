@@ -1,5 +1,5 @@
-import {createContext, useState} from 'react';
-
+import {createContext, useCallback, useState,useEffect} from 'react';
+let loginTimer;
 const AuthContext=createContext(
     {
         token:'',
@@ -15,21 +15,50 @@ const getRemainingTime= (eTime)=>{
     const remainingTime=estimateTime-currentTime;
     return remainingTime
 }
+const retrivedStoredToken = () =>{
+    const storedToken=localStorage.getItem('token');
+    const storedExpireTime=localStorage.getItem('expireTime');
+
+    const remainingTime=getRemainingTime(storedExpireTime);
+
+    if (remainingTime<=60000){
+        localStorage.removeItem('token');
+        localStorage.removeItem('expireTime');
+        return null;
+    }
+    return {token:storedToken,duration:remainingTime};
+}
+
 export const ContextProvider =(props)=>{
-    const initialToken=localStorage.getItem('token')
+    let initialToken;
+    const tokenData=retrivedStoredToken();
+    if (tokenData){
+        initialToken=tokenData.token;
+    }
+    
     const [token,setToken]=useState(initialToken);
     const isLoggedin=!!token;
+    const logoutHandler= useCallback(()=>{
+        localStorage.removeItem('token');
+        localStorage.removeItem('expireTime');
+        if (loginTimer)
+            clearTimeout(loginTimer);
+        setToken(null);
+    },[]);
     const loginHandler= (token,eTime)=>{
         localStorage.setItem('token',token);
+        localStorage.setItem('expireTime',eTime);
         setToken(token);
         const tTime=getRemainingTime(eTime)
         console.log(tTime);
-        setTimeout(logoutHandler, tTime);
+        loginTimer=setTimeout(logoutHandler, tTime);
     }
-    const logoutHandler= ()=>{
-        localStorage.removeItem('token');
-        setToken(null);
-    }
+    useEffect(() => {
+        if (tokenData){
+            loginTimer=setTimeout(logoutHandler, tokenData.duration);
+            console.log(tokenData.duration);
+        }
+    }, [tokenData,logoutHandler])
     const contextValue={
         token,
         isLoggedin,
