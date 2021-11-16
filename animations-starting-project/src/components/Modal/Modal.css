@@ -13,10 +13,52 @@
     transition: all 0.3s ease-out;
 }
 .ModalOpen{
-    opacity: 1;
-    transform: translateY(0);
+    animation: openAnim 0.4s ease-out forwards;
 }
 .ModalClose{
-    opacity: 0;
-    transform: translateY(-300%);
+    animation: closeAnim 1s ease-out forwards;
+    /* opacity: 0;
+    transform: translateY(-300%); */
+}
+/* .fade-slide-enter/exit these are removed after one frame and can be used for initialisation */
+.fade-slide-enter{
+
+}
+.fade-slide-enter-active{
+    animation: openAnim 0.4s ease-out forwards;
+}
+.fade-slide-exit{
+
+}
+.fade-slide-exit-active{
+    animation: closeAnim 1s ease-out forwards;
+}
+
+@keyframes openAnim{
+    0%{
+        opacity: 0;
+        transform: translateY(-300%);
+    }
+    50%{
+        opacity: 0.8;
+        transform: translateY(30%);
+    }
+    100%{
+        opacity: 1;
+        transform: translateY(0%);
+    }
+}
+@keyframes closeAnim{
+    0%{
+        opacity: 1;
+        transform: translateY(0%);
+    }
+    40%{
+        opacity: 0.4;
+        transform: translateY(60%);
+    }
+    100%{
+        opacity: 0;
+        transform: translateY(-300%);
+    }
 }
