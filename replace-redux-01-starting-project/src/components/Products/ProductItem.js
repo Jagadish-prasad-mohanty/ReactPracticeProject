@@ -5,14 +5,17 @@ import Card from '../UI/Card';
 import './ProductItem.css';
 // import { toggleFav } from '../../store/actions/products';
 
-import { useContext } from 'react';
-import { ProdContext } from '../../context/context';
+// import { useContext } from 'react';
+// import { ProdContext } from '../../context/context';
+import { useStore } from '../../customStore/store';
 
 const ProductItem = props => {
-  const prodCtx=useContext(ProdContext)
+  // const prodCtx=useContext(ProdContext)
+  const dispatch = useStore()[1];
 
   const toggleFavHandler = () => {
-    prodCtx.toggleFev(props.id);
+    // prodCtx.toggleFev(props.id);
+    dispatch('TOGGLE_FEV',props.id)
   };
 
   return (

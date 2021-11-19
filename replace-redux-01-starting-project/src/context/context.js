@@ -27,7 +27,7 @@ const DEMO_Products=[{
 export const ProdContext = createContext({
     products: [],
     fevProducts:[],
-    toggleFev:()=>{}
+    toggleFev:(id)=>{}
   });
 
 export const ProdContextProvider= (props)=>{
