@@ -11,11 +11,11 @@ import { useStore } from '../../customStore/store';
 
 const ProductItem = props => {
   // const prodCtx=useContext(ProdContext)
-  const dispatch = useStore()[1];
+  const dispatch = useStore(false)[1];
 
   const toggleFavHandler = () => {
     // prodCtx.toggleFev(props.id);
-    dispatch('TOGGLE_FEV',props.id)
+    dispatch('TOGGLE_FAV',props.id)
   };
 
   return (

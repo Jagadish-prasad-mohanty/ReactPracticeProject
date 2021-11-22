@@ -27,24 +27,27 @@ const DEMO_state={
       }
     ]
   };
+
+const actions={
+  TOGGLE_FAV:(state,productId)=>{
+      const prodIndex = state.products.findIndex(
+          p => p.id === productId
+        );
+        const newFavStatus = !state.products[prodIndex].isFavorite;
+        const updatedProducts = [...state.products];
+        updatedProducts[prodIndex] = {
+          ...state.products[prodIndex],
+          isFavorite: newFavStatus,
+          title:state.products[prodIndex].title,
+        };
+        return {
+          ...state,
+          products: updatedProducts
+        };
+  }
+}
 const ConfigureStore =()=>{
-    initStore(DEMO_state,{
-        TOGGLE_FEV:(state,productId)=>{
-            const prodIndex = state.products.findIndex(
-                p => p.id === productId
-              );
-              const newFavStatus = !state.products[prodIndex].isFavorite;
-              const updatedProducts = [...state.products];
-              updatedProducts[prodIndex] = {
-                ...state.products[prodIndex],
-                isFavorite: newFavStatus
-              };
-              return {
-                ...state,
-                products: updatedProducts
-              };
-        }
-    })
+    initStore(DEMO_state,actions)
 }
 
 export default ConfigureStore;

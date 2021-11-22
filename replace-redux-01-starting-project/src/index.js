@@ -5,6 +5,10 @@ import { BrowserRouter } from 'react-router-dom';
 
 import './index.css';
 import App from './App';
+
+// **CONSTEM STORE **
+import ConfigureProductStore from './customStore/configureStore';
+ConfigureProductStore();
 // ** CONTEXT**
 
 // import {ProdContextProvider} from './context/context'
@@ -20,6 +24,7 @@ import App from './App';
 // });
 
 // const store = createStore(rootReducer);
+
 
 ReactDOM.render(
   // <Provider>

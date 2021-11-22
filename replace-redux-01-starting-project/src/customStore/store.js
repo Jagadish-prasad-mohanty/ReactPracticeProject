@@ -2,32 +2,40 @@ import {useEffect, useState} from 'react';
 
 let globalState={};
 let actions=[];
-let leverages=[]
+let listners=[]
 
-export const useStore = () =>{
+export const useStore = (shouldListner = true) =>{
     const setState =useState(globalState)[1];
 
     const dispatch = (actionIdentifier,payload)=>{
-        console.log("hi");
-        console.log(actions[actionIdentifier])
+        // console.log("hi");
+        // console.log(actions[actionIdentifier])
         const newState=actions[actionIdentifier](globalState,payload);
         globalState={...globalState,...newState}
-        console.log(globalState)
+        // console.log(globalState)
         // return globalState
+        for (const listner of listners){
+            listner(globalState);
+        }
     }
     useEffect(()=>{
-        leverages.push(setState);
+        if (shouldListner)
+        listners.push(setState);
 
         return ()=>{
-            leverages.filter(lev=>lev!==setState)
+            if (shouldListner)
+                listners.filter(lev=>lev!==setState)            
         }
-    },[setState])
+    },[setState,shouldListner])
     return [globalState,dispatch]
 }
 
 
 export const initStore= (initialState,initialActions) =>{
+    if (initialState){
     globalState={...globalState,...initialState};
+
+    }
     actions={...actions,...initialActions}
 
 }
