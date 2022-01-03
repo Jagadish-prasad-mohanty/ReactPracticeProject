@@ -8,9 +8,19 @@ function Ingredients() {
   const [ingredients,setIngredients] =useState([]);
   const getIngredientHandler= (newIngredient)=>{
     console.log("[ingredients]",newIngredient);
-    setIngredients(prevState=>{
-      console.log("prevState",prevState)
-      return [...prevState,{...newIngredient,title:newIngredient.name,id:id++}]
+    fetch('https://hook-starting-project-default-rtdb.firebaseio.com/products.json',{
+      method:'POST',
+      body:JSON.stringify(newIngredient),
+      headers:{
+        'Content-Type':'application/json'
+      }
+    }).then(res=>res.json()).then(responseData=>{
+      
+      console.log("[responseData]",responseData);
+      setIngredients(prevState=>{
+        console.log("prevState",prevState)
+        return [...prevState,{...newIngredient,title:newIngredient.name,id:responseData.name}]
+      });
     });
   }
   const removeIngredienthandler= (id) =>{
