@@ -3,7 +3,6 @@ import React, { useState } from 'react';
 import IngredientForm from './IngredientForm';
 import IngredientList from './IngredientList';
 import Search from './Search';
-var id=1;
 function Ingredients() {
   const [ingredients,setIngredients] =useState([]);
   const getIngredientHandler= (newIngredient)=>{
@@ -24,8 +23,24 @@ function Ingredients() {
     });
   }
   const removeIngredienthandler= (id) =>{
-    setIngredients(prevState=>{
-      return prevState.filter(item=>item.id!==id)
+    const newIngrList=ingredients.filter(item=>item.id!==id);
+    const ingrList={};
+    newIngrList.forEach(item=>{
+      ingrList[item.id]={amount:item.amount,name:item.title}
+    })
+    fetch('https://hook-starting-project-default-rtdb.firebaseio.com/products.json',{
+      method:'PUT',
+      body:JSON.stringify(ingrList),
+      headers:{
+        'Content-Type':'application/json'
+      }
+    }).then((res)=>{
+      return res.json()
+    }).then((data)=>{
+      console.log(data);
+      setIngredients(prevState=>{
+        return prevState.filter(item=>item.id!==id)
+      })
     })
   }
   return (
