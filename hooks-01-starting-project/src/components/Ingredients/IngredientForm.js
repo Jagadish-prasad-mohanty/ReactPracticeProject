@@ -37,7 +37,7 @@ const IngredientForm = React.memo(props => {
             <input type="number" id="amount"  onChange={changeAmountHandler} value={input.amount}/>
           </div>
           <div className="ingredient-form__actions">
-            <button type="submit">Add Ingredient</button>
+            <button type="submit">{props.isLoading?'Loading.....':'Add Ingredient'}</button>
           </div>
         </form>
       </Card>
