@@ -5,7 +5,8 @@ import IngredientList from './IngredientList';
 import Search from './Search';
 function Ingredients() {
   const [ingredients,setIngredients] =useState([]);
-  const [isLoading,setIsLoading]=useState(false)
+  const [isLoading,setIsLoading]=useState(false);
+  const [filterData,setFilterData]=useState('');
   useEffect(() => {
     setIsLoading(true)
     fetch('https://hook-starting-project-default-rtdb.firebaseio.com/products.json'
@@ -67,14 +68,25 @@ function Ingredients() {
       })
     })
   }
+  const getFilterData= (filterValue) =>{
+    setFilterData(filterValue);
+    console.log(filterValue);
+  }
+
+  let filteredIngredients=[...ingredients];
+  if (filterData)
+    filteredIngredients=ingredients.filter(item=>{
+      const filterDataLen=filterData.length;
+      return item.title.substr(0,filterDataLen)===filterData;
+    })
   return (
     <div className="App">
-      <IngredientForm getIngredient={getIngredientHandler} isLoading={isLoading}/>
+      <IngredientForm getIngredient={getIngredientHandler} isLoading={isLoading} />
 
       <section>
-        <Search />
+        <Search getFilter={getFilterData}/>
         {/* Need to add list here! */}
-        <IngredientList ingredients={ingredients} onRemoveItem={removeIngredienthandler}/>
+        <IngredientList ingredients={filteredIngredients} onRemoveItem={removeIngredienthandler}/>
       </section>
     </div>
   );
